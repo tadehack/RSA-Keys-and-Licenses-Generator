@@ -1,5 +1,5 @@
 # RSA_Keys
-A simple key and license generator that uses RSA encryption. 
+A simple key and license generator that uses RSA encryption.    
 This was initially created for my personal use, but I decided to make this an open-source project.
 
 ## Keyboard Shortcuts:
