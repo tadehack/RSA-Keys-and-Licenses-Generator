@@ -8,5 +8,14 @@
     <Setting Name="LicensesDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="NextUserID" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="LastExpirationDate" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="LastKeyBit" Type="System.String" Scope="User">
+      <Value Profile="(Default)">2048</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

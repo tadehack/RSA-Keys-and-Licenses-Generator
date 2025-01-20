@@ -46,5 +46,41 @@ namespace RSA_Keys.Properties {
                 this["LicensesDirectory"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public string NextUserID {
+            get {
+                return ((string)(this["NextUserID"]));
+            }
+            set {
+                this["NextUserID"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastExpirationDate {
+            get {
+                return ((string)(this["LastExpirationDate"]));
+            }
+            set {
+                this["LastExpirationDate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2048")]
+        public string LastKeyBit {
+            get {
+                return ((string)(this["LastKeyBit"]));
+            }
+            set {
+                this["LastKeyBit"] = value;
+            }
+        }
     }
 }

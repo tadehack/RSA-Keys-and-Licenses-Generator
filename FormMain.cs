@@ -30,6 +30,7 @@ namespace RSA_Keys
         bool generateKeysAndLicenses = false;
         bool keyGenerationSuccessful = false;
         bool licenseGenerationSuccessful = false;
+        bool usedIntegerUserId = false;
 
         // Form Behavior --------------------------------------------------------------------------
         private void FormMain_Load(object sender, EventArgs e)
@@ -37,16 +38,19 @@ namespace RSA_Keys
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
 
-            lblVersionLabel.Text = "v1.0";
+            lblVersionLabel.Text = "v1.0.1";
 
             cboKeyLenght.Items.Add(1024);
             cboKeyLenght.Items.Add(2048);
             cboKeyLenght.Items.Add(3072);
             cboKeyLenght.Items.Add(4096);
-            cboKeyLenght.SelectedIndex = 1;
+            cboKeyLenght.Text = Settings.Default.LastKeyBit;
 
             txtNumberOfKeyPairGenerations.Text = "1";
             txtNumberOfLicenseGenerations.Text = "1";
+
+            txtUserId.Text = Settings.Default.NextUserID;
+            txtExpirationDate.Text = Settings.Default.LastExpirationDate;
 
             CheckDefaultDirectories();
             FetchKeyFiles();
@@ -117,6 +121,10 @@ namespace RSA_Keys
             if (keyGenerationSuccessful)
             {
                 keyGenerationSuccessful = false;
+
+                Settings.Default.LastKeyBit = cboKeyLenght.Text;
+                Settings.Default.Save();
+
                 FetchKeyFiles();
                 txtKeyName.Clear();
                 lblKeysGenerated.Text = $"{keyBitLenght} Bit Keys Generated!";
@@ -181,6 +189,16 @@ namespace RSA_Keys
             if (licenseGenerationSuccessful)
             {
                 licenseGenerationSuccessful = false;
+
+                if (usedIntegerUserId)
+                {
+                    usedIntegerUserId = false;
+                    txtUserId.Text = Settings.Default.NextUserID;
+                }
+
+                Settings.Default.LastExpirationDate = txtExpirationDate.Text;
+                Settings.Default.Save();
+
                 FetchLicenseFiles();
                 lblLicensesGenerated.Text = "License Generated!";
                 lblLicensesGenerated.Visible = true;
@@ -238,6 +256,10 @@ namespace RSA_Keys
             if (keyGenerationSuccessful)
             {
                 keyGenerationSuccessful = false;
+
+                Settings.Default.LastKeyBit = cboKeyLenght.Text;
+                Settings.Default.Save();
+
                 FetchKeyFiles();
                 txtKeyName.Clear();
                 lblKeysGenerated.Text = $"{keyBitLenght} Bit Keys Generated!";
@@ -247,7 +269,18 @@ namespace RSA_Keys
             if (licenseGenerationSuccessful)
             {
                 licenseGenerationSuccessful = false;
+
+                if (usedIntegerUserId)
+                {
+                    usedIntegerUserId = false;
+                    txtUserId.Text = Settings.Default.NextUserID;
+                }
+                
+                Settings.Default.LastExpirationDate = txtExpirationDate.Text;
+                Settings.Default.Save();
+
                 FetchLicenseFiles();
+                
                 lblLicensesGenerated.Text = "Licenses Generated!";
                 lblLicensesGenerated.Visible = true;
             }
@@ -472,6 +505,8 @@ namespace RSA_Keys
                     // We do a -1 here so the initial user-typed UserID is not affected on the first gen
                     userIdInteger += generationNumber - 1 ?? 0; // If the value is null, set it to 0
                     userId = userIdInteger.ToString();
+                    Settings.Default.NextUserID = (userIdInteger + 1).ToString();
+                    usedIntegerUserId = true;
                 }
 
                 string licenseData = $"UserID:{userId}\nExpiration:{expirationDate}";
@@ -494,6 +529,7 @@ namespace RSA_Keys
             }
             catch (Exception ex)
             {
+                usedIntegerUserId = false;
                 MessageBox.Show("There was an error generating your license.\n" +
                     "No private RSA key was selected or the key is not in the PEM PKCS#1 format.\n\n",
                     "License Generation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -722,7 +758,8 @@ namespace RSA_Keys
                     MessageBox.Show($"[{keyActualName}] key pair deleted.",
                         "Key Pair Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    lstKeys.SelectedIndex = 0;
+                    if (lstKeys.Items.Count > 0)
+                        lstKeys.SelectedIndex = 0;
                 }
             }
         }
@@ -750,7 +787,8 @@ namespace RSA_Keys
                     MessageBox.Show($"[{licenseName}] was deleted.",
                         "license Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    lstLicenses.SelectedIndex = 0;
+                    if (lstLicenses.Items.Count > 0)
+                        lstLicenses.SelectedIndex = 0;
                 }
             }
         }
