@@ -412,9 +412,9 @@
             lblVersionLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblVersionLabel.Location = new Point(364, 28);
             lblVersionLabel.Name = "lblVersionLabel";
-            lblVersionLabel.Size = new Size(41, 15);
+            lblVersionLabel.Size = new Size(48, 15);
             lblVersionLabel.TabIndex = 31;
-            lblVersionLabel.Text = "v1.0.1";
+            lblVersionLabel.Text = "version";
             lblVersionLabel.TextAlign = ContentAlignment.MiddleRight;
             // 
             // txtNumberOfLicenseGenerations

@@ -1,4 +1,5 @@
 using RSA_Keys.Properties;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -38,7 +39,7 @@ namespace RSA_Keys
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
 
-            lblVersionLabel.Text = "v1.0.1";
+            lblVersionLabel.Text = "v1.0.2";
 
             cboKeyLenght.Items.Add(1024);
             cboKeyLenght.Items.Add(2048);
@@ -497,6 +498,7 @@ namespace RSA_Keys
                 string licensePath = Path.Combine(Settings.Default.LicensesDirectory, licenseName);
 
                 string userId = txtUserId.Text;
+                string minimumDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
                 string expirationDate = txtExpirationDate.Text;
 
                 // If using numeric UserID, increment the user-typed UserID per license
@@ -509,7 +511,7 @@ namespace RSA_Keys
                     usedIntegerUserId = true;
                 }
 
-                string licenseData = $"UserID:{userId}\nExpiration:{expirationDate}";
+                string licenseData = $"UserID:{userId}\nSigned:{minimumDate}\nExpiration:{expirationDate}";
                 byte[] encodedLicenseData = Encoding.UTF8.GetBytes(licenseData);
 
                 string privateKey = File.ReadAllText(privateKeyPath);
